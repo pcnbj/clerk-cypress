@@ -8,7 +8,7 @@ export interface SignInWithClerkArgs {
 
 declare global {
   namespace Cypress {
-    interface Chainable<Subject = any> {
+    export interface Chainable<Subject = any> {
       /**
        * Sign in to clerk with Cypress.env('TEST_USER').
        * Sign in with email code example
