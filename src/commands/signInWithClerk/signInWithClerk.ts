@@ -1,5 +1,7 @@
 import { SignInWithClerkArgs } from '../../../types';
+import { signInWithEmailAndPassword } from './signInWithEmailAndPassword';
 import { signInWithEmailCode } from './signInWithEmailCode';
+import { signInWithPhone } from './signInWithPhone';
 
 Cypress.Commands.add(`signInWithClerk`, args => {
   cy.log(`Signing in with clerk.`);
@@ -9,10 +11,21 @@ Cypress.Commands.add(`signInWithClerk`, args => {
   });
 });
 
-const signInWithClerk = ({ type }: SignInWithClerkArgs) => {
+const signInWithClerk = ({
+  type,
+  email,
+  password,
+  phone,
+}: SignInWithClerkArgs) => {
   cy.visit(`localhost:3000/init`, { failOnStatusCode: false });
 
   if (type === 'email-code') {
-    signInWithEmailCode();
+    signInWithEmailCode({ email });
+  }
+  if (type === 'phone') {
+    signInWithPhone({ phone });
+  }
+  if (type === 'email-password') {
+    signInWithEmailAndPassword({ email, password });
   }
 };

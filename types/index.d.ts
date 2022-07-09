@@ -1,9 +1,14 @@
+import { Clerk } from '@clerk/types';
+
 interface IClearCookies {
   domain?: string | null;
 }
 
 export interface SignInWithClerkArgs {
-  type: 'email-code';
+  type: 'email-code' | 'phone' | 'email-password';
+  email?: string;
+  password?: string;
+  phone?: string;
 }
 
 declare global {
@@ -11,7 +16,6 @@ declare global {
     export interface Chainable<Subject = any> {
       /**
        * Sign in to clerk with Cypress.env('TEST_USER').
-       * Sign in with email code example
        * @example cy.signIn({ type: 'email-code' })
        */
       signInWithClerk(args: SignInWithClerkArgs): Chainable<void>;
@@ -27,6 +31,9 @@ declare global {
           | undefined
       ): Cypress.Chainable<null>;
     }
+  }
+  interface Window {
+    Clerk: Clerk;
   }
 }
 
