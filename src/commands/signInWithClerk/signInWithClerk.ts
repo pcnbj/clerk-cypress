@@ -17,7 +17,9 @@ const signInWithClerk = ({
   password,
   phone,
 }: SignInWithClerkArgs) => {
-  cy.visit(`localhost:3000/init`, { failOnStatusCode: false });
+  cy.visit(Cypress.env('INIT_URL') || `/`, {
+    failOnStatusCode: false,
+  });
 
   if (type === 'email-code') {
     signInWithEmailCode({ email });
