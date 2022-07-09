@@ -21,6 +21,7 @@ export const signInWithEmailAndPassword = ({
         const params: SignInCreateParams = {
           identifier: email || Cypress.env(`TEST_USER_EMAIL`),
           password: password || Cypress.env(`TEST_USER_PASSWORD`),
+          strategy: 'password',
         };
 
         const attemptResponse = await window.Clerk.client.signIn.create(params);

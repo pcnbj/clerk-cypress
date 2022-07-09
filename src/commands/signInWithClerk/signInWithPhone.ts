@@ -1,10 +1,10 @@
-import { PhoneCodeFactor } from '@clerk/types';
+import { PhoneCodeFactor, SignInCreateParams } from '@clerk/types';
 
 interface SignInWithPhoneArgs {
-  phone?: string;
+  phoneNumber?: string;
 }
 
-export const signInWithPhone = ({ phone }: SignInWithPhoneArgs) => {
+export const signInWithPhone = ({ phoneNumber }: SignInWithPhoneArgs) => {
   cy.window()
     .should(window => {
       expect(window).to.not.have.property(`Clerk`, undefined);
@@ -14,12 +14,12 @@ export const signInWithPhone = ({ phone }: SignInWithPhoneArgs) => {
       if (window.Clerk && window.Clerk.client) {
         cy.clearCookies({ domain: null });
 
-        const phoneNumber: string = phone || Cypress.env(`TEST_PHONE_NUMBER`);
-
-        const signInResp = await window.Clerk.client.signIn.create({
-          identifier: phoneNumber,
+        const params: SignInCreateParams = {
+          identifier: phoneNumber || Cypress.env(`TEST_PHONE_NUMBER`),
           strategy: 'phone_code',
-        });
+        };
+
+        const signInResp = await window.Clerk.client.signIn.create(params);
 
         const { phoneNumberId } = signInResp?.supportedFirstFactors.find(ff => {
           if (ff.strategy === 'phone_code') {

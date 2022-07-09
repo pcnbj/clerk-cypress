@@ -12,22 +12,22 @@ Cypress.Commands.add(`signInWithClerk`, args => {
 });
 
 const signInWithClerk = ({
-  type,
+  strategy,
   email,
   password,
-  phone,
+  phoneNumber,
 }: SignInWithClerkArgs) => {
   cy.visit(Cypress.env('INIT_URL') || `/`, {
     failOnStatusCode: false,
   });
 
-  if (type === 'email-code') {
+  if (strategy === 'email-code') {
     signInWithEmailCode({ email });
   }
-  if (type === 'phone') {
-    signInWithPhone({ phone });
+  if (strategy === 'phone-code') {
+    signInWithPhone({ phoneNumber });
   }
-  if (type === 'email-password') {
+  if (strategy === 'password') {
     signInWithEmailAndPassword({ email, password });
   }
 };

@@ -1,14 +1,14 @@
-import { Clerk } from '@clerk/types';
+import { Clerk, Strate } from '@clerk/types';
 
 interface IClearCookies {
   domain?: string | null;
 }
 
 export interface SignInWithClerkArgs {
-  type: 'email-code' | 'phone' | 'email-password';
+  strategy: 'email-code' | 'phone-code' | 'password';
   email?: string;
   password?: string;
-  phone?: string;
+  phoneNumber?: string;
 }
 
 declare global {
