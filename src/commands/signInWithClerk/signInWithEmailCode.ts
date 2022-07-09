@@ -14,7 +14,7 @@ export const signInWithEmailCode = ({ email }: SignInWithEmailCodeArgs) => {
       if (window.Clerk && window.Clerk.client) {
         cy.clearCookies({ domain: null });
 
-        const emailAddress: string = email || Cypress.env(`TEST_USER`);
+        const emailAddress: string = email || Cypress.env(`TEST_USER_EMAIL`);
 
         await window.Clerk.signOut();
 
