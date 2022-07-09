@@ -20,11 +20,21 @@ export const signInWithEmailCode = ({ email }: SignInWithEmailCodeArgs) => {
 
         const signInResp = await window.Clerk.client.signIn.create({
           identifier: emailAddress,
+          strategy: 'email_code',
         });
 
         const { emailAddressId } = signInResp?.supportedFirstFactors.find(
-          ff =>
-            ff.strategy === 'email_code' && ff.safeIdentifier === emailAddress
+          ff => {
+            if (ff.strategy === 'email_code') {
+              const firstFactor = ff as EmailCodeFactor;
+
+              if (firstFactor.safeIdentifier === emailAddress) {
+                return true;
+              }
+            }
+
+            return false;
+          }
         )! as EmailCodeFactor;
 
         await window.Clerk.client.signIn.prepareFirstFactor({

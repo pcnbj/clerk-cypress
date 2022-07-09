@@ -1,3 +1,5 @@
+import { PhoneCodeFactor } from '@clerk/types';
+
 interface SignInWithPhoneArgs {
   phone?: string;
 }
@@ -14,11 +16,27 @@ export const signInWithPhone = ({ phone }: SignInWithPhoneArgs) => {
 
         const phoneNumber: string = phone || Cypress.env(`TEST_PHONE_NUMBER`);
 
-        await window.Clerk.client.signUp.create({
-          phoneNumber,
+        const signInResp = await window.Clerk.client.signIn.create({
+          identifier: phoneNumber,
+          strategy: 'phone_code',
         });
 
-        await window.Clerk.client.signUp.preparePhoneNumberVerification();
+        const { phoneNumberId } = signInResp?.supportedFirstFactors.find(ff => {
+          if (ff.strategy === 'phone_code') {
+            const firstFactor = ff as PhoneCodeFactor;
+
+            if (firstFactor.safeIdentifier === phoneNumber) {
+              return true;
+            }
+          }
+
+          return false;
+        })! as PhoneCodeFactor;
+
+        await window.Clerk.client.signIn.prepareFirstFactor({
+          phoneNumberId,
+          strategy: 'phone_code',
+        });
 
         const attemptResponse = await window.Clerk.client.signUp.attemptPhoneNumberVerification(
           {
