@@ -56,5 +56,8 @@
   },
   "dependencies": {
     "@clerk/types": "^2.19.1"
+  },
+  "repository": {
+    "url": "https://github.com/pcnbj/clerk-cypress"
   }
 }
