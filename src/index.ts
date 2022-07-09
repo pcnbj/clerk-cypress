@@ -1,6 +1,4 @@
-export const sum = (a: number, b: number) => {
-  if ('development' === process.env.NODE_ENV) {
-    console.log('boop');
-  }
-  return a + b;
-};
+/// <reference types="cypress" />
+/// <reference path="../types/index.d.ts" />
+
+import './commands/index';
