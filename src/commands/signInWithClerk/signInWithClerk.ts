@@ -17,17 +17,17 @@ const signInWithClerk = ({
   password,
   phone,
 }: SignInWithClerkArgs) => {
-  cy.request(`/`, {
+  cy.visit(Cypress.env('INIT_URL') || `/`, {
     failOnStatusCode: false,
-  }).then(() => {
-    if (type === 'email-code') {
-      signInWithEmailCode({ email });
-    }
-    if (type === 'phone') {
-      signInWithPhone({ phone });
-    }
-    if (type === 'email-password') {
-      signInWithEmailAndPassword({ email, password });
-    }
   });
+
+  if (type === 'email-code') {
+    signInWithEmailCode({ email });
+  }
+  if (type === 'phone') {
+    signInWithPhone({ phone });
+  }
+  if (type === 'email-password') {
+    signInWithEmailAndPassword({ email, password });
+  }
 };
