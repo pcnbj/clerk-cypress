@@ -6,7 +6,9 @@ import { signInWithPhone } from './signInWithPhone';
 Cypress.Commands.add(`signInWithClerk`, args => {
   cy.log(`Signing in with clerk.`);
 
-  cy.session('signIn', () => {
+  const sessionName = getSessionName(args);
+
+  cy.session(sessionName, () => {
     signInWithClerk(args);
   });
 });
@@ -30,4 +32,22 @@ const signInWithClerk = ({
   if (strategy === 'password') {
     signInWithEmailAndPassword({ email, password });
   }
+};
+
+const getSessionName = ({
+  strategy,
+  email,
+  phoneNumber,
+}: SignInWithClerkArgs) => {
+  if (strategy === 'email-code') {
+    return `signIn__${email}`;
+  }
+  if (strategy === 'phone-code') {
+    return `signIn__${phoneNumber}`;
+  }
+  if (strategy === 'password') {
+    return `signIn__${email}`;
+  }
+
+  return 'signIn';
 };
